@@ -2,6 +2,10 @@
 
 ---
 
+![REGISTER](https://github.com/user-attachments/assets/839f2c73-494a-4ebf-8ed3-922c29e8741d)
+
+<img width="1918" height="910" alt="image" src="https://github.com/user-attachments/assets/c406988e-71d6-411b-b56f-23aca17fc903" />
+
 <img width="1918" height="901" alt="image" src="https://github.com/user-attachments/assets/02194d08-6ac3-4c6b-b42b-d6142d20cd55" />
 
 ---
@@ -114,6 +118,7 @@ Thank you!
 XOXO 
 
 ***
+
 
 
 
