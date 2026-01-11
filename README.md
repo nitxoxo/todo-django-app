@@ -17,7 +17,7 @@
 On your VS Code or Local command promt and Enter the following:
 
  ### 1️⃣ Clone the repository
---> git clone ```bash https://github.com/nitxoxo/todo-django-app.git ``` 
+```bash git clone https://github.com/nitxoxo/todo-django-app.git ``` 
 
 ### 2️⃣ Move into the directory
 ```bash cd todo-django-app ```
@@ -128,6 +128,7 @@ Thank you!
 XOXO 
 
 ***
+
 
 
 
