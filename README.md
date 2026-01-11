@@ -1,8 +1,10 @@
-# 📝 Django Todo List Web App
+# 📝 Django Todo List Web App With User Authetication System
 
 ---
-<img width="1250" height="897" alt="image" src="https://github.com/user-attachments/assets/d468ad51-be92-48a7-ab89-7ccf635bf62a" />
 
+<img width="1918" height="901" alt="image" src="https://github.com/user-attachments/assets/02194d08-6ac3-4c6b-b42b-d6142d20cd55" />
+
+---
 
 ## ⚙️ Installation, Setup & Usage (By Cloning Source Code)
 On your VS Code or Local command promt and Enter the following:
@@ -112,6 +114,7 @@ Thank you!
 XOXO 
 
 ***
+
 
 
 
