@@ -1,0 +1,517 @@
+<!DOCTYPE html>   
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #d7e0f5, #c8d3f0);
+      font-family: 'Poppins', sans-serif;
+      color: #3a4f7a;
+      margin: 0;
+      padding: 6px 20px;
+      overflow-y: auto;
+    }
+
+    .title-wrapper {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    h1.main-title {
+      font-weight: 800;
+      font-size: 2.7rem;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      padding-bottom: 4px;
+      margin: 0;
+    }
+
+    h1.main-title::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -2px;
+      transform: translateX(-50%);
+      width: 72%;
+      height: 4px;
+      background: #7a9dfc;
+      border-radius: 10px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #6a78b8;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .subtitle .emoji {
+      font-size: 2.6rem;
+      margin-left: 6px;
+    }
+
+    .row {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .todo-list {
+      flex: 3;
+      max-width: 720px;
+    }
+
+    .add-task-container {
+      flex: 1.2;
+      max-width: 330px;
+      background: #ffe3eb;
+      border-radius: 24px;
+      padding: 20px 24px;
+      box-shadow: 0 10px 22px rgba(122, 157, 252, 0.12);
+    }
+
+    /* ========== FILTER BUTTONS ========== */
+    .filters {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      align-items: center;   /* vertically center all filter buttons */
+    }
+
+    .filters a, .priority-dropdown > a {
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #6a78b8;
+      padding: 6px 14px;
+      border-radius: 14px;
+      background: #e5eaf8;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filters a.active, .priority-dropdown a.active {
+      background: #7a9dfc;
+      color: white;
+    }
+
+    .priority-dropdown {
+      position: relative;
+      margin-top: 0;  /* reset margin to align with other buttons */
+    }
+
+    .priority-dropdown:hover .priority-menu {
+      display: block;
+    }
+
+    .priority-menu {
+      display: none;
+      position: absolute;
+      top: 110%;
+      left: 0;
+      background: #e5eaf8;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(122,157,252,0.2);
+      min-width: 120px;
+      z-index: 99;
+    }
+
+    .priority-menu a {
+      display: block;
+      padding: 6px 14px;
+      text-decoration: none;
+      color: #6a78b8;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .priority-menu a:hover, .priority-menu a.active {
+      background: #7a9dfc;
+      color: white;
+    }
+
+    /* ===== TASK CARDS ===== */
+    .task-card {
+      background: #ffe3eb;
+      padding: 18px 20px;
+      border-radius: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 14px rgba(255, 182, 204, 0.35);
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .task-card.overdue {
+      background: #ffe1e6;
+      box-shadow: 0 6px 14px rgba(255, 160, 170, 0.45);
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 6px 14px rgba(255, 160, 170, 0.45); }
+      100% { transform: scale(1.03); box-shadow: 0 8px 18px rgba(255, 160, 170, 0.55); }
+    }
+
+    .task-card.completed {
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+
+    .task-card h3 {
+      margin: 0 0 6px 0;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: 0.4px;
+    }
+
+    .task-meta {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #6f73b8;
+      margin-bottom: 4px;
+    }
+
+    .overdue-text {
+      color: #ff6f91;
+      font-weight: 700;
+    }
+
+    .overdue-msg {
+      color: #ff85a1;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .task-card p {
+      margin: 8px 0 0 0;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #4f5fb0;
+      line-height: 1.4;
+    }
+
+    .remove-btn, .edit-btn, .complete-btn {
+      border: none;
+      border-radius: 16px;
+      padding: 8px 12px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #3a4f7a;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remove-btn { background: #dbe4ff; }
+    .edit-btn { background: #ffd6e0; }
+    .complete-btn { background: #e6fff3; }
+
+    .complete-btn {
+      background: #e6fff3;
+      margin-left: 8px;  /* spacing between tick and pencil */
+      padding: 8px 12px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Green pastel square for complete-btn */
+    .complete-btn {
+      background: #d7f0d8; /* soft pastel green */
+      box-shadow: 0 2px 6px rgba(110, 180, 110, 0.25);
+    }
+
+    .priority-badge {
+      background: #ffbfd3;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 18px;
+      text-transform: capitalize;
+      font-size: 0.85rem;
+    }
+
+    .add-task-container label {
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: #4f5fb0;
+      margin-bottom: 6px;
+      display: inline-block;
+      letter-spacing: 0.8px;
+    }
+
+    .add-task-container input,
+    .add-task-container textarea,
+    .add-task-container select {
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 18px;
+      border: none;
+      background: #ffffff;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.9rem;
+      box-shadow:
+        inset 0 0 0 2px #f1c6d9,
+        0 4px 10px rgba(255, 182, 204, 0.35);
+      margin-bottom: 12px;
+      box-sizing: border-box;
+      display: block;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .add-task-container textarea { min-height: 110px; }
+
+    .add-task-container button {
+      width: 100%;
+      margin-top: 12px;
+      background: linear-gradient(135deg, #8fa8ff, #7a9dfc);
+      color: white;
+      padding: 12px 0;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    .logout-btn {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: white;
+      text-decoration: none;
+      padding: 11px 0;
+      border-radius: 26px;
+      background: linear-gradient(135deg, #ff9fb2, #ff6f91);
+      box-shadow: 0 6px 14px rgba(255, 111, 145, 0.35);
+    }
+
+    .no-tasks {
+      text-align: center;
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.3rem;
+      color: rgba(255, 111, 145, 0.85);
+      margin-top: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .task-actions {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* 🎊 Floating banner */
+    #awesome-banner {
+      position: fixed;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #ff9fb2, #ff6f91);
+      color: white;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      padding: 10px 20px;
+      border-radius: 24px;
+      box-shadow: 0 6px 14px rgba(255, 111, 145, 0.35);
+      transition: top 0.6s ease;
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="title-wrapper">
+    <h1 class="main-title">
+      ALMOST THE BESHTTT TODO APP <span class="emoji">😉</span>
+    </h1>
+    <div class="subtitle">
+      YOUR BESTIE IN MANAGING YOUR DAILY TASKS <span class="emoji">🫶</span>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="todo-list">
+      <div class="filters">
+        <a href="?filter=all" class="{% if filter == 'all' and not priority_filter %}active{% endif %}">All Tasks</a>
+        <a href="?filter=today" class="{% if filter == 'today' %}active{% endif %}">Today</a>
+        <a href="?filter=completed" class="{% if filter == 'completed' %}active{% endif %}">Completed</a>
+
+        <!-- Priority Dropdown -->
+        <div class="priority-dropdown">
+          <a href="#" class="{% if priority_filter %}active{% endif %}">Priority 👉</a>
+          <div class="priority-menu">
+            <a href="?priority=low" class="{% if priority_filter == 'low' %}active{% endif %}">🌱 Low</a>
+            <a href="?priority=medium" class="{% if priority_filter == 'medium' %}active{% endif %}">🌸 Medium</a>
+            <a href="?priority=high" class="{% if priority_filter == 'high' %}active{% endif %}">🔥 High</a>
+          </div>
+        </div>
+      </div>
+
+      {% if list %}
+        {% now "U" as now %}
+        {% for task in list %}
+          <div class="task-card 
+               {% if not task.is_completed and task.is_overdue %}overdue{% endif %} 
+               {% if task.is_completed %}completed{% endif %}">
+
+            <h3>
+              {% if task.priority == 'low' %}🌱{% elif task.priority == 'medium' %}🌸{% elif task.priority == 'high' %}🔥{% endif %}
+              {{ task.title }}
+            </h3>
+
+            <div class="task-meta">
+              Created on {{ task.created_at|date:"M d, Y" }}
+            </div>
+
+            {% if task.is_overdue %}
+              <div class="task-meta overdue-text">
+                ⏰ OVERDUE — was due on {{ task.due_date|date:"M d, Y" }} at {{ task.due_date|time:"H:i" }}
+              </div>
+              <div class="overdue-msg">
+                {{ overdue_messages|random }}
+              </div>
+            {% else %}
+              <div class="task-meta">
+                Due on {{ task.due_date|date:"M d, Y" }} ⏰ {{ task.due_date|time:"H:i" }}
+              </div>
+            {% endif %}
+
+            <p>{{ task.details }}</p>
+
+            <div class="task-actions">
+              {% if not task.is_completed %}
+              <a href="{% url 'toggle' task.id %}" 
+                 class="complete-btn" 
+                 onclick="handleComplete(event, '{% url 'toggle' task.id %}')">
+                ✅
+              </a>
+              {% endif %}
+
+              <a href="{% url 'edit' task.id %}" class="edit-btn">✏️</a>
+
+              <form action="{% url 'del' task.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="remove-btn">🗑️</button>
+              </form>
+
+            </div>
+
+            <div class="priority-badge">
+              {% if task.priority %}
+                {{ task.get_priority_display }}
+              {% else %}
+                No Priority
+              {% endif %}
+            </div>
+
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="no-tasks">🎉 Yay! You have no tasks at the moment!</div>
+      {% endif %}
+    </div>
+
+    <div class="add-task-container">
+      <form method="POST">
+        {% csrf_token %}
+        <label>Title</label>
+        {{ forms.title }}
+
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+          <div style="flex: 2;">
+            <label>Details</label>
+            {{ forms.details }}
+          </div>
+          <div style="flex: 1;">
+            <label>Priority</label>
+            <div style="position: relative;">
+              {{ forms.priority }}
+              <span style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none;">👉</span>
+            </div>
+          </div>
+        </div>
+
+        <label>Due date 📅 ⏰</label>
+        {{ forms.due_date }}
+
+        <button type="submit">Add Task</button>
+      </form>
+
+      <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
+
+  </div>
+
+  <!-- 🎊 CONFETTI + DELAY REDIRECT -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    function handleComplete(event, url) {
+      event.preventDefault();
+
+      confetti({
+        particleCount: 120,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
+
+      setTimeout(function () {
+        window.location.href = url;
+      }, 400);
+    }
+
+    const titleInput = document.querySelector('input[name="title"]');
+    const placeholderMessages = ["Add your task here… 💡", "Don’t forget to smile! 😊", "Let’s crush it today! 🔥"];
+    let i = 0;
+    function cyclePlaceholder() {
+      titleInput.placeholder = placeholderMessages[i];
+      i = (i + 1) % placeholderMessages.length;
+    }
+    setInterval(cyclePlaceholder, 3000);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const allTasksCompleted = {{ all_completed|yesno:"true,false" }};
+      if (allTasksCompleted) {
+        const banner = document.getElementById('awesome-banner');
+        banner.style.top = '20px';
+        setTimeout(() => { banner.style.top = '-60px'; }, 4000);
+      }
+    });
+  </script>
+
+  <div id="awesome-banner">🎉 All done! Time to relax 🫶</div>
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Quicksand:wght@500;600;700&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d7e0f5, #c8d3f0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #ffe3eb;
+      width: 420px; /* slightly smaller */
+      padding: 36px 32px;
+      border-radius: 24px;
+      box-shadow: 0 12px 26px rgba(255, 182, 204, 0.35);
+      text-align: center;
+    }
+
+    h2 {
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      font-size: 1.9rem;
+      margin-bottom: 20px;
+      color: #3a4f7a;
+    }
+
+    .input-box {
+      position: relative;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 42px 12px 36px;
+      border: none;
+      border-radius: 16px;
+      background: #ffffff;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.92rem;
+      box-shadow:
+        inset 0 0 0 2px #f1c6d9,
+        0 4px 10px rgba(255, 182, 204, 0.35);
+      box-sizing: border-box;
+      transition: 0.25s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      background: #ffffff;
+      box-shadow: 0 0 0 2px #8fa8ff;
+    }
+
+    .input-emoji {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 16px;
+      color: #6f8cff;
+    }
+
+    .rules-box {
+      text-align: left;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: #3a4f7a;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .rules-box p {
+      margin: 3px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .rules-box span {
+      margin-right: 6px;
+      font-weight: bold;
+    }
+
+    .invalid { color: #e65b5b; }
+    .valid { color: #4caf50; }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #8fa8ff, #7a9dfc);
+      border: none;
+      color: white;
+      font-size: 0.92rem;
+      font-weight: 800;
+      border-radius: 28px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 6px;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #7a9dfc, #6f8cff);
+    }
+
+    .login-text {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #3a4f7a;
+    }
+
+    .login-text a {
+      color: #8fa8ff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <h2>📝 Register</h2>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <!-- Username -->
+      <div class="input-box">
+        <span class="input-emoji">🙍</span>
+        <input type="text" id="username" name="username" placeholder="Name"
+               class="form-control" required onkeyup="validateUsername()">
+      </div>
+
+      <!-- USERNAME RULES -->
+      <div class="rules-box" id="username-rule-box">
+        <p id="username-rule-uppercase" class="invalid"><span>✖</span> At least one uppercase letter</p>
+        <p id="username-rule-lowercase" class="invalid"><span>✖</span> At least one lowercase letter</p>
+      </div>
+
+      <!-- Email -->
+      <div class="input-box">
+        <span class="input-emoji">📧</span>
+        <input type="email" name="email" placeholder="Email" class="form-control" required>
+      </div>
+
+      <!-- Password -->
+      <div class="input-box">
+        <span class="input-emoji">🔒</span>
+        <input type="password" name="password1" id="password1"
+               placeholder="Password" class="form-control" required onkeyup="validatePassword()">
+        <span class="toggle-password" onclick="togglePassword('password1')">👁️</span>
+      </div>
+
+      <!-- PASSWORD RULES -->
+      <div class="rules-box">
+        <p id="length" class="invalid"><span>✖</span> At least 10 characters</p>
+        <p id="upper" class="invalid"><span>✖</span> One uppercase letter</p>
+        <p id="lower" class="invalid"><span>✖</span> One lowercase letter</p>
+        <p id="number" class="invalid"><span>✖</span> One number</p>
+        <p id="special" class="invalid"><span>✖</span> One special character</p>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="input-box">
+        <span class="input-emoji">🔒</span>
+        <input type="password" name="password2" id="password2"
+               placeholder="Confirm Password" class="form-control" required>
+        <span class="toggle-password" onclick="togglePassword('password2')">👁️</span>
+      </div>
+
+      <button type="submit" class="btn">Register</button>
+    </form>
+
+    <div class="login-text">
+      Already have an account? <a href="{% url 'login' %}">Login</a>
+    </div>
+
+  </div>
+
+<script>
+function togglePassword(id) {
+  const pwd = document.getElementById(id);
+  pwd.type = pwd.type === "password" ? "text" : "password";
+}
+
+function validatePassword() {
+  const password = document.getElementById("password1").value;
+  toggleRule("length", password.length >= 10);
+  toggleRule("upper", /[A-Z]/.test(password));
+  toggleRule("lower", /[a-z]/.test(password));
+  toggleRule("number", /[0-9]/.test(password));
+  toggleRule("special", /[^A-Za-z0-9]/.test(password));
+}
+
+function toggleRule(id, condition) {
+  const el = document.getElementById(id);
+  const icon = el.querySelector("span");
+  if (condition) {
+    el.classList.remove("invalid");
+    el.classList.add("valid");
+    icon.textContent = "✔";
+  } else {
+    el.classList.remove("valid");
+    el.classList.add("invalid");
+    icon.textContent = "✖";
+  }
+}
+
+function validateUsername() {
+  const username = document.getElementById("username").value.trim();
+  const upperRule = document.getElementById("username-rule-uppercase");
+  const lowerRule = document.getElementById("username-rule-lowercase");
+
+  if (/[A-Z]/.test(username)) {
+    upperRule.classList.remove("invalid");
+    upperRule.classList.add("valid");
+    upperRule.querySelector("span").textContent = "✔";
+  } else {
+    upperRule.classList.remove("valid");
+    upperRule.classList.add("invalid");
+    upperRule.querySelector("span").textContent = "✖";
+  }
+
+  if (/[a-z]/.test(username)) {
+    lowerRule.classList.remove("invalid");
+    lowerRule.classList.add("valid");
+    lowerRule.querySelector("span").textContent = "✔";
+  } else {
+    lowerRule.classList.remove("valid");
+    lowerRule.classList.add("invalid");
+    lowerRule.querySelector("span").textContent = "✖";
+  }
+}
+</script>
+
+</body>
+</html>
