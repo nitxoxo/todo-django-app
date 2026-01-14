@@ -96,15 +96,25 @@ This application helps users manage daily tasks efficiently by allowing them to 
 ## 📂 Project Structure
 - todo_site/
 │── manage.py
+
 │── todo_app/
+
 │ ├── migrations/
+
 │ ├── templates/
+
 │ ├── static/
+
 │ ├── models.py
+
 │ ├── views.py
+
 │ ├── urls.py
+
 │── db.sqlite3
+
 │── requirements.txt
+
 │── README.md
 
 
@@ -131,6 +141,7 @@ Thank you!
 XOXO 
 
 ***
+
 
 
 
